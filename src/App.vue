@@ -1,15 +1,32 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <ActorTable :actors="actors"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ActorTable from "@/components/ActorTable";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    ActorTable,
+  },
+  data() {
+    return {
+      actors: [],
+      isEditing: false,
+    }
+  },
+  methods: {
+    async fetchActors() {
+      const res = await fetch('https://data.cinetica-tech.com/test/api/actors')
+      const data = await res.json()
+      return data
+    }
+  },
+  async created() {
+    this.actors = await this.fetchActors()
   }
 }
 </script>
